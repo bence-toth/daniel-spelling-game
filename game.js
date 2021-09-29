@@ -51,9 +51,16 @@ const letters = [
 const puzzleNode = document.getElementById("puzzle");
 const lettersNode = document.getElementById("letters");
 
-lettersNode.innerHTML = letters
-  .map((letter) => `<button data-letter="${letter}">${letter}</button>`)
-  .join("");
+const renderLetterButtons = (lettersToRender) =>
+  lettersToRender
+    .map((letter) => `<button data-letter="${letter}">${letter}</button>`)
+    .join("");
+
+lettersNode.innerHTML = `
+  <div>${renderLetterButtons(letters.slice(0, 12))}</div>
+  <div>${renderLetterButtons(letters.slice(12, 24))}</div>
+  <div>${renderLetterButtons(letters.slice(24))}</div>
+`;
 
 lettersNode.querySelectorAll("button").forEach((button) => {
   button.addEventListener("click", (event) => {
