@@ -1,55 +1,7 @@
-const puzzles = [
-  {
-    word: "alma",
-    image: "https://media.istockphoto.com/photos/red-apple-picture-id495878092",
-  },
-  {
-    word: "körte",
-    image:
-      "https://media.istockphoto.com/photos/pear-green-with-leaf-picture-id186861864",
-  },
-];
-
-const letters = [
-  "a",
-  "á",
-  "b",
-  "c",
-  "d",
-  "e",
-  "é",
-  "f",
-  "g",
-  "h",
-  "i",
-  "í",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "ó",
-  "ö",
-  "ő",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "ú",
-  "ü",
-  "ű",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-];
-
 const puzzleNode = document.getElementById("puzzle");
 const lettersNode = document.getElementById("letters");
+
+const letters = "aábcdeéfghiíjklmnoóöőpqrstuúüűvwxyz".split("");
 
 const renderLetterButtons = (lettersToRender) =>
   lettersToRender
