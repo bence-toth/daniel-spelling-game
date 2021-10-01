@@ -55,6 +55,9 @@ lettersNode.innerHTML = `
 `;
 
 const buttonClickHandler = (event) => {
+  if ([...event.target.classList].includes("disabled")) {
+    return;
+  }
   event.target.classList.add("disabled");
   const selectedLetter = event.target.dataset.letter;
   const foundLetters = document.querySelectorAll(
