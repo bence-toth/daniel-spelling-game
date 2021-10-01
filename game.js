@@ -15,7 +15,7 @@ lettersNode.innerHTML = `
 `;
 
 const buttonClickHandler = (event) => {
-  event.target.disabled = true;
+  event.target.classList.add("disabled");
   const selectedLetter = event.target.dataset.letter;
   const foundLetters = document.querySelectorAll(
     `#puzzleWord [data-letter='${selectedLetter}']`
@@ -30,7 +30,7 @@ const buttonClickHandler = (event) => {
   ].every((letter) => letter.innerHTML !== "_");
   if (isPuzzleSolved) {
     lettersNode.querySelectorAll("button").forEach((button) => {
-      button.disabled = true;
+      button.classList.add("disabled");
     });
     setTimeout(() => {
       initPuzzle();
@@ -55,7 +55,7 @@ let currentPuzzle = "";
 const initPuzzle = () => {
   currentPuzzle = getRandomElementFromArray(puzzles, currentPuzzle);
   lettersNode.querySelectorAll("button").forEach((button) => {
-    button.disabled = false;
+    button.classList.remove("disabled");
   });
   puzzleNode.innerHTML = `
     <img class="puzzleImage" src="${currentPuzzle.image}" />
