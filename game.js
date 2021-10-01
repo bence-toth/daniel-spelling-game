@@ -72,9 +72,14 @@ const buttonClickHandler = (event) => {
     lettersNode.querySelectorAll("button").forEach((button) => {
       button.classList.add("disabled");
     });
+    playSound("applause");
     setTimeout(() => {
       initPuzzle();
     }, 3000);
+  } else if (foundLetters.length > 0) {
+    playSound();
+  } else {
+    playSound("negative");
   }
 };
 
