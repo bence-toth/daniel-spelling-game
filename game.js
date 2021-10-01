@@ -1,3 +1,43 @@
+const voiceFiles = {
+  positive: [
+    "hurrah1",
+    "hurrah2",
+    "hurrah3",
+    "hurrah4",
+    "hurrah5",
+    "hurrah6",
+    "hurrah7",
+    "super1",
+    "super2",
+    "super3",
+    "super4",
+    "super5",
+    "super6",
+    "yay1",
+    "yay2",
+    "yay3",
+    "yay4",
+  ],
+  negative: ["oh-oh1", "oh-oh2", "oh-oh3", "oh-oh4"],
+  applause: [
+    "wow1",
+    "wow2",
+    "wow3",
+    "wow4",
+    "wow5",
+    "woo-hoo1",
+    "woo-hoo2",
+    "woo-hoo3",
+    "woo-hoo4",
+  ],
+};
+
+const playSound = (type = "positive") => {
+  const voiceFile = getRandomElementFromArray(voiceFiles[type]);
+  const audio = new Audio(`./assets/sound/${voiceFile}.mp3`);
+  audio.play();
+};
+
 const puzzleNode = document.getElementById("puzzle");
 const lettersNode = document.getElementById("letters");
 
