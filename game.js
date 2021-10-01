@@ -112,7 +112,9 @@ const initPuzzle = () => {
     button.classList.remove("disabled");
   });
   puzzleNode.innerHTML = `
-    <img class="puzzleImage" src="${currentPuzzle.image}" />
+    <img class="puzzleImage" src="./assets/puzzles/${
+      currentPuzzle.image
+    }.svg" />
     <div id="puzzleWord">
       ${currentPuzzle.word
         .split("")
