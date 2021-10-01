@@ -92,6 +92,12 @@ lettersNode.querySelectorAll("button").forEach((button) => {
   button.addEventListener("auxclick", buttonClickHandler);
 });
 
+window.addEventListener("keyup", (event) => {
+  [...lettersNode.querySelectorAll("button")]
+    .find((button) => button.dataset.letter === event.key)
+    ?.click();
+});
+
 const getRandomElementFromArray = (array, exceptFor) => {
   const filteredArray = array.filter((item) => item !== exceptFor);
   const randomIndex = Math.floor(Math.random() * filteredArray.length);
