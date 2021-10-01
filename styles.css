@@ -70,6 +70,16 @@ body.customCursor * {
   cursor: none;
 }
 
+@media (max-aspect-ratio: 12/10) {
+  #pointer {
+    display: none;
+  }
+  body.customCursor,
+  body.customCursor * {
+    cursor: initial;
+  }
+}
+
 #pointer {
   position: fixed;
   top: 0;
@@ -105,9 +115,21 @@ main {
   margin-bottom: 4vh;
 }
 
+@media (max-aspect-ratio: 12/10) {
+  #puzzle {
+    height: 35vh;
+  }
+
+  .puzzleImage {
+    max-height: 15vh;
+    margin-bottom: 4vh;
+  }
+}
+
 #puzzleWord {
   text-transform: uppercase;
   font-size: 8vh;
+  white-space: nowrap;
 }
 
 #puzzleWord [data-letter] {
@@ -117,12 +139,27 @@ main {
   width: 8vh;
 }
 
+@media (max-aspect-ratio: 12/10) {
+  #puzzleWord {
+    font-size: 8vw;
+  }
+  #puzzleWord [data-letter] {
+    width: 6vw;
+  }
+}
+
 #letters {
   height: 35vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-aspect-ratio: 12/10) {
+  #letters {
+    height: 65vh;
+  }
 }
 
 #letters button {
@@ -135,6 +172,22 @@ main {
   border-radius: 1vh;
   border: 1px solid darkgray;
   background-color: lightgray;
+}
+
+@media (max-aspect-ratio: 12/10) {
+  #letters {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 65vh;
+  }
+  #letters > div {
+    width: 100%;
+    text-align: center;
+  }
+  #letters button {
+    width: calc(16.67% - 2.5vh);
+    height: 8vh;
+  }
 }
 
 #letters button.disabled {
