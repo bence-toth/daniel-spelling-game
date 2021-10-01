@@ -30,8 +30,12 @@ lettersNode.querySelectorAll("button").forEach((button) => {
       ...document.querySelectorAll("#puzzleWord [data-letter]"),
     ].every((letter) => letter.innerHTML !== "_");
     if (isPuzzleSolved) {
-      console.log("yay");
-      initPuzzle();
+      lettersNode.querySelectorAll("button").forEach((button) => {
+        button.disabled = true;
+      });
+      setTimeout(() => {
+        initPuzzle();
+      }, 3000);
     }
   });
 });
