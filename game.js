@@ -14,30 +14,34 @@ lettersNode.innerHTML = `
   <div>${renderLetterButtons(letters.slice(24))}</div>
 `;
 
+const buttonClickHandler = (event) => {
+  event.target.classList.add("disabled");
+  const selectedLetter = event.target.dataset.letter;
+  const foundLetters = document.querySelectorAll(
+    `#puzzleWord [data-letter='${selectedLetter}']`
+  );
+  if (foundLetters.length > 0) {
+    foundLetters.forEach((foundLetter) => {
+      foundLetter.innerHTML = selectedLetter;
+    });
+  }
+  const isPuzzleSolved = [
+    ...document.querySelectorAll("#puzzleWord [data-letter]"),
+  ].every((letter) => letter.innerHTML !== "_");
+  if (isPuzzleSolved) {
+    lettersNode.querySelectorAll("button").forEach((button) => {
+      button.classList.add("disabled");
+    });
+    setTimeout(() => {
+      initPuzzle();
+    }, 3000);
+  }
+};
+
 lettersNode.querySelectorAll("button").forEach((button) => {
-  button.addEventListener("click", (event) => {
-    event.target.disabled = true;
-    const selectedLetter = event.target.dataset.letter;
-    const foundLetters = document.querySelectorAll(
-      `#puzzleWord [data-letter='${selectedLetter}']`
-    );
-    if (foundLetters.length > 0) {
-      foundLetters.forEach((foundLetter) => {
-        foundLetter.innerHTML = selectedLetter;
-      });
-    }
-    const isPuzzleSolved = [
-      ...document.querySelectorAll("#puzzleWord [data-letter]"),
-    ].every((letter) => letter.innerHTML !== "_");
-    if (isPuzzleSolved) {
-      lettersNode.querySelectorAll("button").forEach((button) => {
-        button.disabled = true;
-      });
-      setTimeout(() => {
-        initPuzzle();
-      }, 3000);
-    }
-  });
+  button.addEventListener("click", buttonClickHandler);
+  button.addEventListener("contextmenu", buttonClickHandler);
+  button.addEventListener("auxclick", buttonClickHandler);
 });
 
 const getRandomElementFromArray = (array, exceptFor) => {
@@ -51,7 +55,7 @@ let currentPuzzle = "";
 const initPuzzle = () => {
   currentPuzzle = getRandomElementFromArray(puzzles, currentPuzzle);
   lettersNode.querySelectorAll("button").forEach((button) => {
-    button.disabled = false;
+    button.classList.remove("disabled");
   });
   puzzleNode.innerHTML = `
     <img class="puzzleImage" src="${currentPuzzle.image}" />
