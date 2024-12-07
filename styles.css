@@ -102,8 +102,16 @@ main {
   flex-direction: column;
 }
 
+#image {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 #puzzle {
-  height: 65vh;
+  height: 25vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -111,19 +119,7 @@ main {
 }
 
 .puzzleImage {
-  max-height: 30vh;
-  margin-bottom: 4vh;
-}
-
-@media (max-aspect-ratio: 12/10) {
-  #puzzle {
-    height: 35vh;
-  }
-
-  .puzzleImage {
-    max-height: 15vh;
-    margin-bottom: 4vh;
-  }
+  max-height: 80%;
 }
 
 #puzzleWord {

@@ -1,47 +1,31 @@
-const voiceFiles = {
-  positive: [
-    "hurrah1",
-    "hurrah2",
-    "hurrah3",
-    "hurrah4",
-    "hurrah5",
-    "hurrah6",
-    "hurrah7",
-    "super1",
-    "super2",
-    "super3",
-    "super4",
-    "super5",
-    "super6",
-    "yay1",
-    "yay2",
-    "yay3",
-    "yay4",
-  ],
-  negative: ["oh-oh1", "oh-oh2", "oh-oh3", "oh-oh4"],
-  applause: [
-    "wow1",
-    "wow2",
-    "wow3",
-    "wow4",
-    "wow5",
-    "woo-hoo1",
-    "woo-hoo2",
-    "woo-hoo3",
-    "woo-hoo4",
-  ],
-};
+let language = "hu";
 
-const playSound = (type = "positive") => {
-  const voiceFile = getRandomElementFromArray(voiceFiles[type]);
-  const audio = new Audio(`./assets/sound/${voiceFile}.mp3`);
-  audio.play();
-};
+let voice;
+new Promise((resolve) => {
+  let synth = window.speechSynthesis;
+  let id;
 
+  id = setInterval(() => {
+    if (synth.getVoices().length !== 0) {
+      resolve(synth.getVoices());
+      clearInterval(id);
+    }
+  }, 10);
+}).then((voices) => {
+  console.log(voices);
+  voice = voices.find((voice) => voice.lang.startsWith(language)) ?? voices[0];
+  console.log(voice);
+});
+
+const imageNode = document.getElementById("image");
 const puzzleNode = document.getElementById("puzzle");
 const lettersNode = document.getElementById("letters");
 
-const letters = "aábcdeéfghiíjklmnoóöőpqrstuúüűvwxyz".split("");
+const letters = {
+  hu: "aábcdeéfghiíjklmnoóöőpqrstuúüűvwxyz".split(""),
+  en: "abcdefghijklmnopqrstuvwxyz".split(""),
+  da: "abcdefghijklmnopqrstuvwxyzæøå".split(""),
+};
 
 const renderLetterButtons = (lettersToRender) =>
   lettersToRender
@@ -49,10 +33,33 @@ const renderLetterButtons = (lettersToRender) =>
     .join("");
 
 lettersNode.innerHTML = `
-  <div>${renderLetterButtons(letters.slice(0, 12))}</div>
-  <div>${renderLetterButtons(letters.slice(12, 24))}</div>
-  <div>${renderLetterButtons(letters.slice(24))}</div>
+  <div>${renderLetterButtons(letters[language].slice(0, 12))}</div>
+  <div>${renderLetterButtons(letters[language].slice(12, 24))}</div>
+  <div>${renderLetterButtons(letters[language].slice(24))}</div>
 `;
+
+let isSpeaking = false;
+const sayWord = (word) => {
+  if (isSpeaking) {
+    return;
+  }
+  isSpeaking = true;
+  const message = new SpeechSynthesisUtterance();
+  message.text = word;
+  message.voice = voice;
+  window.speechSynthesis.speak(message);
+  let r = setInterval(() => {
+    if (!speechSynthesis.speaking) {
+      clearInterval(r);
+    } else {
+      speechSynthesis.pause();
+      speechSynthesis.resume();
+    }
+  }, 1000);
+  message.onend = () => {
+    isSpeaking = false;
+  };
+};
 
 const buttonClickHandler = (event) => {
   if ([...event.target.classList].includes("disabled")) {
@@ -75,14 +82,9 @@ const buttonClickHandler = (event) => {
     lettersNode.querySelectorAll("button").forEach((button) => {
       button.classList.add("disabled");
     });
-    playSound("applause");
     setTimeout(() => {
       initPuzzle();
     }, 3000);
-  } else if (foundLetters.length > 0) {
-    playSound();
-  } else {
-    playSound("negative");
   }
 };
 
@@ -98,8 +100,12 @@ window.addEventListener("keyup", (event) => {
     ?.click();
 });
 
+imageNode.addEventListener("click", () => {
+  sayWord(currentPuzzle[language]);
+});
+
 const getRandomElementFromArray = (array, exceptFor) => {
-  const filteredArray = array.filter((item) => item !== exceptFor);
+  const filteredArray = array.filter((item) => item[language] !== exceptFor);
   const randomIndex = Math.floor(Math.random() * filteredArray.length);
   return filteredArray[randomIndex];
 };
@@ -111,12 +117,12 @@ const initPuzzle = () => {
   lettersNode.querySelectorAll("button").forEach((button) => {
     button.classList.remove("disabled");
   });
+  imageNode.innerHTML = `
+    <img class="puzzleImage" src="./assets/puzzles/${currentPuzzle.image}.jpg" />
+  `;
   puzzleNode.innerHTML = `
-    <img class="puzzleImage" src="./assets/puzzles/${
-      currentPuzzle.image
-    }.svg" />
     <div id="puzzleWord">
-      ${currentPuzzle.word
+      ${currentPuzzle[language]
         .split("")
         .map((letter) => `<span data-letter="${letter}">_</span>`)
         .join("")}
