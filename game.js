@@ -1,4 +1,7 @@
-let language = "hu";
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+let language = urlParams.get("lang") ?? "hu";
 
 let voice;
 new Promise((resolve) => {
